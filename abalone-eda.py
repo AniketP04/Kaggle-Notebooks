@@ -3,9 +3,6 @@
 
 # ## Importing Libraries and Loading Data
 
-# In[1]:
-
-
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -36,9 +33,6 @@ from explainerdashboard import RegressionExplainer, ExplainerDashboard
 
 # Open the file and see what data we will work with.
 
-# In[2]:
-
-
 df = pd.read_csv('../EDA/data/abalone.csv')
 df
 
@@ -60,16 +54,12 @@ df
 
 # Let's see what data we have to work with.
 
-# In[3]:
-
 
 df.head()
 
 
 # Only sex is a categorical feature. The rest are numeric.
 # Let's look at the sample size.
-
-# In[4]:
 
 
 df.shape
@@ -78,7 +68,6 @@ df.shape
 # There are 4177 objects in the dataset. 9 columns (8 features) and a column that is responsible for the target.
 # Let's look at data types and missing values.
 
-# In[5]:
 
 
 df.info()
@@ -89,7 +78,6 @@ df.info()
 # With describe(), let's look at the main statistical characteristics of the data.
 # 
 
-# In[6]:
 
 
 df.describe(include='all')
@@ -101,15 +89,12 @@ df.describe(include='all')
 # 
 # Let's check the data for bagels.
 
-# In[7]:
-
 
 df.duplicated().sum()
 
 
 # There are no duplicates. Let's reduce the names in the columns to lower case.
 
-# In[8]:
 
 
 df.columns = df.columns.str.lower()
@@ -121,7 +106,6 @@ df.columns
 
 # * # Pearson correlation
 
-# In[9]:
 
 
 df_num = df.drop('sex', axis=1)
@@ -132,7 +116,6 @@ sns.heatmap(corr, cmap="Blues_r", annot=True)
 
 # * # Spearman correlation
 
-# In[10]:
 
 
 corr = df_num.corr(method='spearman')
@@ -142,7 +125,6 @@ sns.heatmap(corr, cmap="Blues_r", annot=True)
 
 # * # Kendala Correlation
 
-# In[11]:
 
 
 corr = df_num.corr(method='kendall')
@@ -156,7 +138,6 @@ sns.heatmap(corr, cmap="Blues_r", annot=True)
 
 # Let's look at the correlation between numerical and categorical trait (gender) using ANOVA.
 
-# In[12]:
 
 
 Data = []
@@ -180,7 +161,6 @@ AnovaRes
 
 # ## Rings - number of rings
 
-# In[13]:
 
 
 def desc(col):
@@ -191,7 +171,6 @@ def desc(col):
     sns.histplot(data = df[col], kde = True)
 
 
-# In[14]:
 
 
 desc('rings')
@@ -201,7 +180,6 @@ desc('rings')
 # 
 # You can try passing the logarithm of y instead of y to the model.
 
-# In[15]:
 
 
 sns.histplot(data = np.log(df['rings']), kde = True)
@@ -210,13 +188,10 @@ sns.histplot(data = np.log(df['rings']), kde = True)
 # 
 # Calculate the target according to the dataset description (age is the number of rings + 1.5): age = 1.5 + rings
 
-# In[16]:
 
 
 df['age'] = df['rings'] + 1.5
 
-
-# In[17]:
 
 
 df.head()
@@ -224,21 +199,17 @@ df.head()
 
 # ## Sex - gender
 
-# In[18]:
-
 
 desc('sex')
 
 
 # Rename f to F.
 
-# In[19]:
 
 
 df['sex'] = df['sex'].replace({'f' : 'F'})
 
 
-# In[20]:
 
 
 desc('sex')
@@ -249,7 +220,6 @@ desc('sex')
 # 
 # Let's look at the dependence of average age on the sex of shells.
 
-# In[21]:
 
 
 plt.figure(figsize=(6,4))
@@ -261,7 +231,6 @@ plt.show()
 
 # The graph shows that women's ears are slightly heavier than men's. The weight of babies' ears is minimal.
 
-# In[22]:
 
 
 num_cols = [ 'length', 'diameter', 'height', 'whole weight', 'shucked weight', 'viscera weight', 'shell weight']
@@ -272,7 +241,6 @@ for c in num_cols:
 
 # Let's look at the dependence of the average weight on the length, diameter, height, total weight, pulp weight, viscera weight, shell weight.
 
-# In[23]:
 
 
 num_cols = [ 'length', 'diameter', 'height', 'whole weight', 'shucked weight', 'viscera weight', 'shell weight']
@@ -285,7 +253,6 @@ for c in num_cols:
 
 # According to all graphs, the minimum dimensions and weights refer to baby barnacles. There is no significant difference between male and female shells.
 
-# In[24]:
 
 
 plt.figure(figsize=(10, 8))
@@ -294,7 +261,6 @@ df[num_cols].boxplot()
 
 # We have outliers in total weight, pulp weight, viscera weight, and shell weight.
 
-# In[25]:
 
 
 sns.pairplot(df, hue="sex")
@@ -306,7 +272,6 @@ sns.pairplot(df, hue="sex")
 
 # Let's set a function that will increase the number of lines to the minimum. We pass to the input the dataframe that needs to be multiplied and the size of the dataset that we should get at the output.
 
-# In[26]:
 
 
 def upsample(data,rows):
@@ -318,7 +283,6 @@ def upsample(data,rows):
     return data
 
 
-# In[27]:
 
 
 df_mln = upsample(df, 1000000)
@@ -329,13 +293,11 @@ len(df_mln)
 
 # * Data upload
 
-# In[28]:
 
 
 get_ipython().run_cell_magic('time', '', "#Polaris\ndf_pl = pl.read_csv('../EDA/data/abalone.csv')")
 
 
-# In[29]:
 
 
 get_ipython().run_cell_magic('time', '', "# Pandas\ndf_p = pd.read_csv('../EDA/data/abalone.csv')")
@@ -345,13 +307,11 @@ get_ipython().run_cell_magic('time', '', "# Pandas\ndf_p = pd.read_csv('../EDA/d
 
 # * Filtration
 
-# In[30]:
 
 
 get_ipython().run_cell_magic('time', '', "# Polars\ndf_pl[['Sex', 'Rings']]")
 
 
-# In[31]:
 
 
 get_ipython().run_cell_magic('time', '', "# Pandas\ndf_p[['Sex', 'Rings']]")
