@@ -1,4 +1,4 @@
-# 📑Kaggle
+# Kaggle
 
 **Description:**
 This repository houses a curated collection of Kaggle notebooks showcasing a range of data science projects. It includes Exploratory Data Analysis (EDA), predictive analytics, and competition entries. The notebooks are designed to demonstrate practical applications of machine learning and deep learning techniques and data science methodologies, reflecting ongoing practice and skill development in the field.
